@@ -1,16 +1,16 @@
 (function($) {
-	$.extend({
-		toDictionary: function(query) {
-			var parms = {};
-			var items = query.split('&'); // split
-			for (var i = 0; i < items.length; i++) {
-				var values = items[i].split('=');
-				var key = decodeURIComponent(values.shift());
-				var value = values.join('=');
-			}
-			return decodeURIComponent(value);
-		}
-	})
+  $.extend({
+    toDictionary: function(query) {
+      var value, key, values;
+      var items = query.split('&'); // split
+      for (var i = 0; i < items.length; i++) {
+        values = items[i].split('=');
+        key = decodeURIComponent(values.shift());
+        value = values.join('=');
+      }
+      return decodeURIComponent(value);
+    }
+  });
 })(jQuery);
 
 (function( $ ) {
@@ -71,7 +71,7 @@
 		} else {
 			if(opts.allValueTag) {
 				var select = $(cell).find('select option:selected').val();		  
-				if($.trim($(cell).text()) == "" || select != undefined) {
+				if($.trim($(cell).text()) === '' || select !== undefined) {
 					var serialized = $(cell).find('input, textarea, select').serialize();
 					var item = $.toDictionary(serialized);
 					value = item;
@@ -87,15 +87,15 @@
 	};
 	
 	var replace = function(firstRow) {
-		if(jQuery.type(firstRow) === "string") {
-			var result =  firstRow.replace(/[áàâãª]/g, 'a').replace(/[ÁÀÂÃ]/g, 'A')
-					.replace(/[éèêë]/g, 'e').replace(/[ÉÈÊË]/g, 'E').replace(/[íìî]/g, 'i').replace(/[ÍÌÎ]/g, 'I')
-					.replace(/[ÓÒÔÕ]/g, 'O').replace(/[óòôõº]/g, 'o').replace(/[úùû]/g, 'u')
-					.replace(/[ÚÙÛÜ]/g, 'U').replace(/[ç]/g, 'c').replace(/[Ç]/g, 'C').replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
-			
-		}		
+    var result;
+		if(jQuery.type(firstRow) === 'string') {
+		  result =  firstRow.replace(/[áàâãª]/g, 'a').replace(/[ÁÀÂÃ]/g, 'A')
+			  .replace(/[éèêë]/g, 'e').replace(/[ÉÈÊË]/g, 'E').replace(/[íìî]/g, 'i').replace(/[ÍÌÎ]/g, 'I')
+			  .replace(/[ÓÒÔÕ]/g, 'O').replace(/[óòôõº]/g, 'o').replace(/[úùû]/g, 'u')
+			  .replace(/[ÚÙÛÜ]/g, 'U').replace(/[ç]/g, 'c').replace(/[Ç]/g, 'C').replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+		}
 		return result;
-	}
+	};
 
 	var rowValues = function(row) {
 	  var result = [];
