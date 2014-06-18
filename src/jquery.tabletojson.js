@@ -19,58 +19,57 @@
   $.fn.tableToJSON = function(opts) {
 
 	// Set options
-	var defaults = {
-		ignoreColumns: [],
-		onlyColumns: null,
-		ignoreHiddenRows: true,
-		headings: null,
-		allowHTML: false,
-		formatHeader: false,
-		allValueTag: false
-	};
-	opts = $.extend(defaults, opts);
-
-	var notNull = function(value) {
-	  return value !== undefined && value !== null;
-	};
-
+  var defaults = {
+    ignoreColumns: [],
+    onlyColumns: null,
+    ignoreHiddenRows: true,
+    headings: null,
+    allowHTML: false,
+    formatHeader: false,
+    allValueTag: false
+  };
+    opts = $.extend(defaults, opts);
+    var notNull = function(value) {
+      return value !== undefined && value !== null;
+    };
+    
 	var ignoredColumn = function(index) {
-	  if( notNull(opts.onlyColumns) ) {
-		return $.inArray(index, opts.onlyColumns) === -1;
-	  }
-	  return $.inArray(index, opts.ignoreColumns) !== -1;
-	};
-	
-	var arraysToHash = function(keys, values) {
-		var keysFormat = [];
-		$.each(keys, function(i, v) {
-			if(opts.formatHeader) {
-				keysFormat.push(replace(v));
-			} else {
-				keysFormat.push(v);
-			}
-		});
-		
-		var result = {}, index = 0;
-		$.each(values, function(i, value) {
-		// when ignoring columns, the header option still starts
-		// with the first defined column
-		if ( index < keysFormat.length && notNull(value) ) {
-			result[ keysFormat[index] ] = value;
-			index++;
-		}
-	});
-		return result;
-	};
+    if( notNull(opts.onlyColumns) ) {
+      return $.inArray(index, opts.onlyColumns) === -1;
+    }
+    return $.inArray(index, opts.ignoreColumns) !== -1;
+  };
+    
+    var arraysToHash = function(keys, values) {
+      var keysFormat = [];
+      $.each(keys, function(i, v) {
+        if(opts.formatHeader) {
+          keysFormat.push(replace(v));
+        } else {
+          keysFormat.push(v);
+        }
+      });
+      
+      var result = {}, index = 0;
+      $.each(values, function(i, value) {
+        // when ignoring columns, the header option still starts
+        // with the first defined column
+        if ( index < keysFormat.length && notNull(value) ) {
+          result[ keysFormat[index] ] = value;
+          index++;
+        }
+      });
+      return result;
+    };
 	
 	var cellValues = function(cellIndex, cell) {
-		var value, result;
-		var override = $(cell).data('override');
-		if ( opts.allowHTML ) {
-			value = $.trim($(cell).html());
-		} else {
-			if(opts.allValueTag) {
-				var select = $(cell).find('select option:selected').val();		  
+    var value, result;
+    var override = $(cell).data('override');
+    if ( opts.allowHTML ) {
+      value = $.trim($(cell).html());
+    } else {
+      if(opts.allValueTag) {
+        var select = $(cell).find('select option:selected').val();		  
 				if($.trim($(cell).text()) === '' || select !== undefined) {
 					var serialized = $(cell).find('input, textarea, select').serialize();
 					var item = $.toDictionary(serialized);
